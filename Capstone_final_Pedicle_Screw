@@ -1,0 +1,260 @@
+# Import tkinter 
+from tkinter import *
+import numpy as np
+import math
+class TrajectoryCalculator: 
+    
+    
+  
+    def __init__(self): 
+  
+        
+        
+        window = Tk() # Create a window 
+        window.title("Innovative Instruments") # Set title 
+        # create the input boxes.
+        
+        ## Input label for apparatus length
+        Label(window,text = "Apparatus_length").grid(row = 0, column = 1, sticky = W)
+        
+        ## Input label for Pedicle 1
+        Label(window, text = "Pedicle 1").grid(row = 1, 
+                                          column = 1, sticky = W) 
+        
+        ## Input label, pedicle 2
+        Label(window, text = "Pedicle 2").grid(row = 2, 
+                                               column = 1, sticky = W) 
+        ## input label, spinous process        
+        Label(window, text = "Spinous").grid(row = 3, 
+                                  column = 1, sticky = W) 
+        
+        ##Input label, Trajectory end point
+        Label(window, text = "Trajectory end point: ").grid(row = 4, 
+                                      column = 1, sticky = W) 
+        
+        ## Input label, Trajectory 2 end point. Can be used in the future
+        #Label(window, text = "H2").grid(row = 5, 
+         #                           column = 1, sticky = W) 
+        
+        ## Output label, gives length of leg 1 (spinous process to tip of trajectory)
+        Label(window, text = "Length of leg to spinous process (Leg 1): ").grid(row = 1, 
+                                    column = 9, sticky = W) 
+        
+        ## output label, gives the length of leg 1 (spinous process to tip of trajectory)
+        Label(window, text = "Length of leg to opposite pedicle (Leg 2): ").grid(row = 2, 
+                                    column = 9, sticky = W) 
+        
+        ## output label, gives the angle of leg 1 to trajectory
+        Label(window, text = "Angle of Theta 1 (Trajectory to Leg 1): ").grid(row = 3, 
+                                                                                    column = 9, sticky = W)
+        
+        ## output label, gives the angle of leg 1 to leg 2
+        Label(window, text = "Angle of Theta 2 (Trajectory to Leg 2): ").grid(row = 4, 
+                                                                                    column = 9, sticky = W)
+        
+        ## output label, gives the angle of leg 2 to trajectory
+        Label(window, text = "Angle of Theta 3 (Leg 1 to Leg 2): ").grid(row = 5, 
+                                                                                    column = 9, sticky = W)
+        
+
+        
+        
+        
+        
+  
+        # Sets up the inputs for taking in text
+        
+        ## Input for apparatus legth
+        self.ApparatusVar = DoubleVar()
+        Entry(window, textvariable = self.ApparatusVar, justify = RIGHT).grid(
+            row = 0, column = 2)
+        
+        ## input for pedicle 1 x coordinate
+        self.Pedicle1xVar = DoubleVar()  
+        Entry(window, textvariable = self.Pedicle1xVar, 
+                     justify = RIGHT).grid(row = 1, column = 2) 
+        
+        ## input for pedicle 1 y coordinate
+        self.Pedicle1yVar = DoubleVar()  
+        Entry(window, textvariable = self.Pedicle1yVar, 
+                     justify = RIGHT).grid(row = 1, column = 3) 
+        
+        ## input for pedicle 1 z coordinate
+        self.Pedicle1zVar = DoubleVar()  
+        Entry(window, textvariable = self.Pedicle1zVar, 
+                     justify = RIGHT).grid(row = 1, column = 4) 
+        
+        ## input for pedicle 2 x coordinate
+        self.Pedicle2xVar = DoubleVar() 
+        Entry(window, textvariable = self.Pedicle2xVar, 
+                 justify = RIGHT).grid(row = 2, column = 2)
+
+        ## input for pedicle 2 y coordinate
+        self.Pedicle2yVar = DoubleVar() 
+        Entry(window, textvariable = self.Pedicle2yVar, 
+                 justify = RIGHT).grid(row = 2, column = 3) 
+
+        ## input for pedicle 2 z coordinate
+        self.Pedicle2zVar = DoubleVar() 
+        Entry(window, textvariable = self.Pedicle2zVar, 
+                 justify = RIGHT).grid(row = 2, column = 4)  
+        
+        ## input for spinous process x coordinate
+        self.SpinousxVar = DoubleVar() 
+        Entry(window, textvariable = self.SpinousxVar, 
+              justify = RIGHT).grid(row = 3, column = 2) 
+       
+        ## input for spinous process y coordinate
+        self.SpinousyVar = DoubleVar() 
+        Entry(window, textvariable = self.SpinousyVar, 
+              justify = RIGHT).grid(row = 3, column = 3) 
+        
+        ## input for spinous process z coordinate
+        self.SpinouszVar = DoubleVar() 
+        Entry(window, textvariable = self.SpinouszVar, 
+              justify = RIGHT).grid(row = 3, column = 4) 
+        
+        ## input for Trajectory end x coordinate
+        self.H1PrimexVar = DoubleVar() 
+        Entry(window, textvariable = self.H1PrimexVar, 
+                    justify = RIGHT).grid(row = 4, column = 2) 
+        
+        ## input for trajectory end y coordinate
+        self.H1PrimeyVar = DoubleVar() 
+        Entry(window, textvariable = self.H1PrimeyVar, 
+                    justify = RIGHT).grid(row = 4, column = 3) 
+        
+        ## input for trajectory end z coordinate
+        self.H1PrimezVar = DoubleVar() 
+        Entry(window, textvariable = self.H1PrimezVar, 
+                    justify = RIGHT).grid(row = 4, column = 4) 
+
+       
+        
+        ## output text for length of line 1 (to spinous process)
+        self.Length1Var = DoubleVar() 
+        lblLength1Var = Label(window, textvariable = 
+                           self.Length1Var).grid(row = 1, 
+                           column = 10, sticky = E) 
+                                                 
+        ## output for text for length of line 2 (to opposite pedilce)                                        
+        self.Length2Var = DoubleVar() 
+        lblLength2Var = Label(window, textvariable = 
+                       self.Length2Var).grid(row = 2, 
+                       column = 10, sticky = E) 
+        
+        ## output for theta 1 (leg 1 to trajectory)
+        self.Theta1Var = DoubleVar()
+        lblTheta1Var = Label(window, textvariable =
+                             self.Theta1Var).grid(row = 3,
+                                                  column = 10, sticky = E)
+        ## output for theta 2 (leg 2 to trajectory)                                              
+        self.Theta2Var = DoubleVar()
+        lblTheta2Var = Label(window, textvariable =
+                             self.Theta2Var).grid(row = 4,
+                                                  column = 10, sticky = E)
+        
+        ## output for theta 3 (leg 1 to leg 2)                                          
+        self.Theta3Var = DoubleVar()
+        lblTheta3Var = Label(window, textvariable =
+                             self.Theta3Var).grid(row = 5,
+                                                  column = 10, sticky = E)                                         
+        
+        btComputeVector = Button(window, text = "Calculate", 
+                           command = self.computeLengths).grid( 
+                               row = 6, column = 4, sticky = E)                                      
+        window.mainloop() # Create an event loop 
+  
+  
+    # compute the lengths and angles. 
+    def computeLengths(self): 
+        
+        ## define each point as an array        
+        
+        apparatus_length = float(self.ApparatusVar.get()),
+        p1 = np.asarray([float(self.Pedicle1xVar.get()), float(self.Pedicle1yVar.get()), float(self.Pedicle1zVar.get()) ])
+        h1prime = np.asarray([float(self.H1PrimexVar.get()),  float(self.H1PrimeyVar.get()), float(self.H1PrimezVar.get())])
+        
+        spinous = np.asarray([float(self.SpinousxVar.get()),float(self.SpinousyVar.get()) , float(self.SpinouszVar.get())])
+        p2 = np.asarray([float(self.Pedicle2xVar.get()), float(self.Pedicle2yVar.get()), float(self.Pedicle2zVar.get()) ])
+    
+        
+        
+        ## gives the output of the function used to determine point h (point in space)
+        h1 = self.getH(p1, h1prime, apparatus_length)
+        
+        ## defines the vectors of the three lines of the apparatus
+        trajectoryVector = h1 - p1
+        leg1Vector = h1 - spinous
+        leg2Vector = h1 - p2
+        
+         ## gives the outputs of all the line lengths and angles from the functions. 
+        trajectory_mag = np.sum(((h1 - p1)**2 ) **0.5)
+        length_1 = self.getLength1(leg1Vector)
+        length_2 = self.getLength2(leg2Vector)
+        theta_1 = self.getTheta1(trajectoryVector, leg1Vector, trajectory_mag, length_1)
+        theta_2 = self.getTheta2(trajectoryVector, leg2Vector, trajectory_mag, length_2)
+        theta_3 = self.getTheta3(leg1Vector, leg2Vector, length_1, length_2)
+                         
+                         
+            ## place the outputs in their respective text boxes to be outputted in the GUI
+        self.Length1Var.set(format(length_1, '10.3f'))
+        self.Length2Var.set(format(length_2, '10.3f'))
+        self.Theta1Var.set(format(theta_1,  '10.3f'))
+        self.Theta2Var.set(format(theta_2,  '10.3f'))
+        self.Theta3Var.set(format(theta_3, '10.3f'))
+        
+        
+        ## function to find point H in space
+    def getH(self, p1, h1prime, apparatus_length): 
+        trajectory_initial = p1 - h1prime
+        h1 = (trajectory_initial )* apparatus_length/( (np.sum((trajectory_initial)**2))**0.5 ) 
+        return h1
+    
+        ## function to find the length of line to spinous process
+    def getLength1(self, leg1Vector): 
+        length_1 = (np.sum((leg1Vector)**2)) **0.5
+        return length_1
+    
+        ## function to find length of line to opposite pedicle
+    def getLength2(self, leg2Vector): 
+        length_2 = (np.sum((leg2Vector)**2)) **0.5
+        return length_2
+    
+        ## function to find angle 1 from trajectory to line 1
+    def getTheta1(self, trajectoryVector, leg1Vector, trajectory_mag, length_1):
+        theta_1 = math.acos((np.dot(trajectoryVector, leg1Vector))/(trajectory_mag * length_1)) * 180/(math.pi)
+        return theta_1
+    
+        ## function to find angle 2 from trajectory to line 2
+    def getTheta2(self, trajectoryVector, leg2Vector, trajectory_mag, length_2): 
+        theta_2 = math.acos((np.dot(trajectoryVector, leg2Vector))/(trajectory_mag * length_2)) * 180/(math.pi)
+        return theta_2
+    
+        ## function to find angle 3 from line 1 to line 2
+    def getTheta3(self, leg1Vector, leg2Vector, length_1, length_2): 
+        theta_3 = math.acos((np.dot(leg1Vector, leg2Vector))/(length_1 * length_2)) * 180/(math.pi)
+        return theta_3
+
+        
+        
+       
+
+        
+      
+
+        
+  
+        
+    
+        
+   
+        
+    
+   
+    
+    
+    
+  
+ # call the class to run the program. 
+TrajectoryCalculator() 
